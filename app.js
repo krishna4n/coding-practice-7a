@@ -58,10 +58,10 @@ app.put("/players/:playerId/", async (request, response) => {
 app.get("/matches/:matchId/", async (request, response) => {
   const { matchId } = request.params;
   const getMatchesQuery = `select * from match_details where match_id = ${matchId} order by match_id asc`;
-  const matchesDetails = await db.all(getMatchesQuery);
-  const matchesObject = matchesDetails.map((obj) => {
-    return { matchId: obj.match_id, match: obj.match, year: obj.year };
-  });
+  const matchesDetails = await db.get(getMatchesQuery);
+  const matchesObject = {
+     matchId: matchesDetails.match_id, match: matchesDetails.match, year: matchesDetails.year 
+  };
   response.send(matchesObject);
 });
 app.get("/players/:playerId/matches", async (request, response) => {
